@@ -11,7 +11,7 @@ class Producto extends Model
 
 
     protected $guarded=[];
-    protected $fillable = ['talla','cantidad','precio','producto'];
+    protected $fillable = ['talla','cantidad','precio','producto','comprobante','user_id'];
 
     
     //relationship one to many (reverse)

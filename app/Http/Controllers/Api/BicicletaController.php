@@ -97,7 +97,6 @@ class BicicletaController extends Controller
         $bicicleta=Imagen::find($id);
         $detallesproducto=Detallesproducto::find($id); 
         $bicicleta = Bicicleta::find($id);
-
         return $bicicleta;
     }
 

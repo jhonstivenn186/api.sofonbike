@@ -243,20 +243,20 @@ class DatabaseSeeder extends Seeder {
         $imagen6->url = "img/Multimedia/comprar3.jpg";
         $producto6->imagen()->save($imagen6);    */
 
-       /*  $arrays = range(0,10);
+         $arrays = range(0,10);
         foreach ($arrays as $valor) {
           DB::table('productos')->insert([	            
               'talla' => Str::random(10),
               'cantidad' =>  rand(1, 99),
               'precio' => rand(1, 99),
               'comprobante' => rand(1, 99),
-              'user_id' => rand(1, 10),
-              'estado_id' => rand(1, 10),
-              'tipo_id' => rand(1, 10),
+              'user_id' => 1,
+              'estado_id' => 1,
+              'tipo_id' => 2,
           ]);
-        } */
+        } 
 
-        $arrays = range(0,10);
+        /* $arrays = range(0,10);
         foreach ($arrays as $valor) {
           DB::table('bicicletas')->insert([	            
               'tamaño' => Str::random(10),
@@ -292,6 +292,6 @@ class DatabaseSeeder extends Seeder {
               'imageable_type' => 'App\Models\Bicicleta',
           ]);
         }
-
+ */
     }
 }
