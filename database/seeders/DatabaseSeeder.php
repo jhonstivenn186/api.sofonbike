@@ -243,7 +243,7 @@ class DatabaseSeeder extends Seeder {
         $imagen6->url = "img/Multimedia/comprar3.jpg";
         $producto6->imagen()->save($imagen6);    */
 
-         $arrays = range(0,10);
+/*          $arrays = range(0,10);
         foreach ($arrays as $valor) {
           DB::table('productos')->insert([	            
               'talla' => Str::random(10),
@@ -254,7 +254,7 @@ class DatabaseSeeder extends Seeder {
               'estado_id' => 1,
               'tipo_id' => 2,
           ]);
-        } 
+        }  */
 
         /* $arrays = range(0,10);
         foreach ($arrays as $valor) {
@@ -292,6 +292,17 @@ class DatabaseSeeder extends Seeder {
               'imageable_type' => 'App\Models\Bicicleta',
           ]);
         }
+
  */
+
+$arrays = range(0,10);
+foreach ($arrays as $valor) {
+  DB::table('posteos')->insert([	            
+        'descripcion' => Str::random(10),
+        'categoria_id' => 1,
+      'user_id' => 1,
+  ]);
+} 
+
     }
 }

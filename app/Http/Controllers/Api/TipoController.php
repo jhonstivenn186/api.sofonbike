@@ -57,7 +57,10 @@ class TipoController extends Controller
      */
     public function show($id)
     {
-        $tipo = Tipo::find($id);
+
+        $tipo = Tipo::with(['productos.detallesproducto'])->findOrFail($id);
+
+       // $tipo = Tipo::find($id);
 
         return $tipo;
     }
@@ -102,4 +105,5 @@ class TipoController extends Controller
 
         return 'registro eliminado' ;
     }
+
 }

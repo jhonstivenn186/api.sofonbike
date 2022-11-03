@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Estado;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\Http;
 /**
  * Class EstadoController
  * @package App\Http\Controllers
@@ -19,8 +19,11 @@ class EstadoController extends Controller
     public function index()
     {
         $estados = Estado::paginate();
-
-        return $estados;
+        $response = Http::get('http://api.codersfree.test/v1/categories');
+        $responseArray = $response->json();  
+        
+        return  /* view('welcome', compact('categoriesArray')) */$responseArray;
+       /*  return $estados; */
     }
 
     /**
@@ -42,13 +45,7 @@ class EstadoController extends Controller
      */
     public function store(Request $request)
     {
-/*  
-       request()->validate(Estado::$rules);
- */
-        /* $request->validate([
-            'name' => 'required'
-            
-        ]); */
+
         $estado = Estado::create($request->all());
 
         return $estado;
@@ -62,8 +59,8 @@ class EstadoController extends Controller
      */
     public function show($id)
     {
-        $estado = Estado::find($id);
-
+       // $estado = Estado::find($id);
+        $estado = Estado::with(['productos.detallesproducto'])->findOrFail($id);
         return $estado;
     }
 

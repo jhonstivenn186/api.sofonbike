@@ -3,15 +3,15 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RegisterController;
-use App\Http\Controllers\SessionsController;
+use App\Http\Controllers\Api\SessionsController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\PrincipalController;
 use App\Http\Controllers\Api\ProductoController;
 use App\Http\Controllers\Api\DetallesproductoController;
 use App\Http\Controllers\Api\BicicletaController;
 use App\Http\Controllers\PostController;
-use App\Http\Controllers\PosteoController;
-use App\Http\Controllers\ImagenController;
+use App\Http\Controllers\Api\PosteoController;
+use App\Http\Controllers\Api\ImagenController;
 use App\Http\Controllers\Api\EstadoController;
 use App\Http\Controllers\Api\TipoController;
 use App\Http\Controllers\Api\CategoriaController;
@@ -123,20 +123,20 @@ Route::resource('posts', \App\Http\Controllers\PostController::class)->middlewar
 
 Route::apiResource('categorias', \App\Http\Controllers\Api\CategoriaController::class)->names('api.categorias');
 
-Route::resource('posteos', \App\Http\Controllers\PosteoController::class)->middleware('auth');
+Route::apiResource('posteos', \App\Http\Controllers\Api\PosteoController::class);
 /* Route::get('posteos/{posteo}/d/',[PosteoController::class,'publicados'])->name('posteos.publicados');
  */
 Route::get('publicaciones',[PosteoController::class,'publicados'])->name('posteos.publicados')->middleware('auth');
 
 
-Route::resource('imagenes', \App\Http\Controllers\ImagenController::class)->middleware('auth'); 
-Route::get('imagenes',[ImagenController::class,'index'])->name('imagens.index')->middleware('auth');
-Route::get('imagenes/create',[ImagenController::class,'create'])->name('imagens.create')->middleware('auth');
-Route::post('imagenes', [ImagenController::class,'store'])->name('imagens.store')->middleware('auth');
-Route::post('imagenes/{imagen}', [ImagenController::class,'show'])->name('imagens.show')->middleware('auth');
-Route::delete('imagenes/{imagen}', [ImagenController::class,'destroy'])->name('imagens.destroy')->middleware('auth');
-Route::get('imagenes/{imagen}/edit', [ImagenController::class,'edit'])->name('imagens.edit')->middleware('auth');
-Route::put('imagenes/{imagen}', [ImagenController::class,'update'])->name('imagens.update')->middleware('auth');
+Route::resource('imagenes', \App\Http\Controllers\Api\ImagenController::class); 
+Route::get('imagenes',[ImagenController::class,'index'])->name('imagens.index');
+Route::get('imagenes/create',[ImagenController::class,'create'])->name('imagens.create');
+Route::post('imagenes', [ImagenController::class,'store'])->name('imagens.store');
+Route::post('imagenes/{imagen}', [ImagenController::class,'show'])->name('imagens.show');
+Route::delete('imagenes/{imagen}', [ImagenController::class,'destroy'])->name('imagens.destroy');
+Route::get('imagenes/{imagen}/edit', [ImagenController::class,'edit'])->name('imagens.edit');
+Route::put('imagenes/{imagen}', [ImagenController::class,'update'])->name('imagens.update');
 
 Route::get('listaproductos',[ProductoController::class,'indexlista'])->name('productos.listaproducto')->middleware('auth');
 
@@ -149,9 +149,10 @@ Route::get('/form', [ControllerMail::class, 'index']);
 // ruta al enviar correo
 Route::post('/send',  [ControllerMail::class, 'send']);
 
-Route::apiResource('estados', \App\Http\Controllers\Api\EstadoController::class)->names('api.estados');
 
-Route::resource('tipos', \App\Http\Controllers\Api\TipoController::class)->names('api.tipos');
+
+Route::apiResource('estados', \App\Http\Controllers\Api\EstadoController::class)->names('api.estados');
+Route::apiResource('tipos', \App\Http\Controllers\Api\TipoController::class)->names('api.tipos');
 
 
 Route::post('pppp', [PosteoController::class,'guardar'])->name('posteos.guardar')->middleware('auth');

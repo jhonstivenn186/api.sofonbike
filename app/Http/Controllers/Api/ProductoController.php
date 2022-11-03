@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
+
 use App\Models\Bicicleta;
 use App\Models\Producto;
 use App\Models\Imagen;
+use App\Models\User;
 use App\Models\Detallesproducto;
 use Auth;
 use Illuminate\Http\Request;
@@ -16,12 +18,6 @@ class ProductoController extends Controller
 {
     public function index(Request $request,  Detallesproducto $detallesproducto, Imagen $imagen, Producto $producto){
         $productos=Producto::all();
-        $detallesproductos=Detallesproducto::all();   
-        $detallesproductos = Detallesproducto::all()->where('imageable_type', 'App\Models\Producto');
-      /*   $producto=Producto::where('user_id', auth()->user()->id);
-        Detallesproducto::with('productos')->orderBy('id', 'DESC')->where('user_id', auth()->user()->id); */
-        $productos = Producto::paginate(3);
-        $imagens = Imagen::all()->where('imageable_type', 'App\Models\Producto');
 
     return $productos;
 
@@ -33,44 +29,13 @@ class ProductoController extends Controller
     public function store(Request $request, Producto $producto, Detallesproducto $detallesproducto, Imagen $imagen){
         $producto= new  Producto();
         $producto->talla=$request->talla;
-      /*   if($request->hasfile("comprobante")){
-            $file=$request->file("comprobante");
-            $destinationPath= 'pdf/archivos/';
-            $filename=time().'-'.$file->getClientOriginalName();
-            $uploadSuccess=$request->file('comprobante')->move($destinationPath, $filename);
-            $producto->comprobante = $filename;
-        }  */
         $producto->comprobante = $request->comprobante;
         $producto->cantidad=$request->cantidad;
         $producto->precio=$request->precio;
-       /*  $producto->user_id = auth()->user()->id; */
        $producto->user_id = $request->user_id;
        $producto->estado_id = $request->estado_id;
        $producto->tipo_id = $request->tipo_id;
-
         $producto->save();
-
-      /*   $detallesproducto = new Detallesproducto();
-        $detallesproducto->name =$request->name;
-        $detallesproducto->descripcion=$request->descripcion;
-        $detallesproducto->color=$request->color;
-        $detallesproducto->material=$request->material;
-        $detallesproducto->marca=$request->marca;
-        $detallesproducto->modelo=$request->modelo;
-      
-        $producto->detallesproducto()->save($detallesproducto);   
-
-       
-        $imagen = new Imagen();
-        if($request->hasfile("imagen")){
-            $file=$request->file("imagen");
-            $destinationPath= 'img/Multimedia/';
-            $filename=time().'-'.$file->getClientOriginalName();
-            $uploadSuccess=$request->file('imagen')->move($destinationPath, $filename);
-            $imagen->url = $destinationPath . $filename;
-        }  
-        $producto->imagen()->save($imagen);    */
-   
         return $producto;
     }
 
@@ -85,10 +50,22 @@ class ProductoController extends Controller
     }
     
     public function show($producto)
-    { 
-        $producto=Producto::find($producto);
-    
+    {
+        $users=User::All();
+         $productos=Producto::All();
+
+$detallesproducto=Detallesproducto::All();
+
+       
+    foreach ($productos as $producto){
+        $detallesproducto= Detallesproducto::find($producto->detallesproducto->id);
         return $producto;
+        }
+
+    foreach ($productos as $producto){
+        $imagen= Imagen::find($producto->imagen->id);
+        return $producto;
+        }      
     }
 
     public function edit(Request $request,Producto $producto, Detallesproducto $detallesproducto, Imagen $imagen)
@@ -108,25 +85,6 @@ class ProductoController extends Controller
         $producto->tipo_id = $request->tipo_id;
         $producto->save();
 
-       /*  $detallesproducto= Detallesproducto::find($producto->detallesproducto->id);
-        $detallesproducto->name =$request->name;
-        $detallesproducto->descripcion=$request->descripcion;
-        $detallesproducto->color=$request->color;
-        $detallesproducto->material=$request->material;
-        $detallesproducto->marca=$request->marca;
-        $detallesproducto->modelo=$request->modelo;
-        $producto->detallesproducto()->save($detallesproducto);    
-
-        $imagen=Imagen::find($producto->imagen->id);
-        if($request->hasfile("imagen")){
-            $file=$request->file("imagen");
-            $destinationPath= 'img/Multimedia/';
-            $filename=$file->getClientOriginalName();
-            $uploadSuccess=$request->file('imagen')->move($destinationPath, $filename);
-            $imagen->url = $destinationPath . $filename;
-        }  
-        $producto->imagen()->save($imagen);    */
-
        return $producto;
     }
 
@@ -143,10 +101,9 @@ class ProductoController extends Controller
     }
 
     public function indexlista(Detallesproducto $detallesproductos, Imagen $imagen, Producto $producto){
-        $detallesproductos = Detallesproducto::all()->where('imageable_type', 'App\Models\Producto');
+     
         $productos=Producto::All();
         $productos = Producto::paginate(3);
-        $producto=Producto::where('user_id', auth()->user()->id);
         $imagens = Imagen::all()->where('imageable_type', 'App\Models\Producto');
 
         return view ('productos.listaProducto', compact('productos','detallesproductos','imagens'));

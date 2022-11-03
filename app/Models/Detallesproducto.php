@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Detallesproducto extends Model
 {
+    protected $allowIncluded=['imagen'];
+
     protected $guarded=[];
     use HasFactory;
    /*  protected $fillable = ['name', 'descripcion','marca','imagen','talla']; */

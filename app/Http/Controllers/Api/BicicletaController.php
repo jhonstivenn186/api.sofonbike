@@ -25,13 +25,8 @@ class BicicletaController extends Controller
     public function index(Request $request, Detallesproducto $detallesproducto,  Bicicleta $bicicleta, Imagen $imagen)
 
     {
-        $imagens = Imagen::all()->where('imageable_type', 'App\Models\Bicicleta');
-        $detallesproductos = Detallesproducto::all()->where('imageable_type', 'App\Models\Bicicleta');
-        $bicicletas = Bicicleta::paginate(3);
-
-     /*    return [$bicicletas, $detallesproducto]; */
-
-     return  $bicicletas; 
+    $bicicletas = Bicicleta::paginate(3);
+    return  $bicicletas; 
 
     }
 
@@ -62,25 +57,7 @@ class BicicletaController extends Controller
         $bicicleta->n_serial=$request->n_serial;
         $bicicleta->user_id=1;
         $bicicleta->save();
-    
-     /*    $detallesproducto = new Detallesproducto();
-        $detallesproducto->name =$request->name;
-        $detallesproducto->descripcion=$request->descripcion;
-        $detallesproducto->color=$request->color;
-        $detallesproducto->material=$request->material;
-        $detallesproducto->marca=$request->marca;
-        $detallesproducto->modelo=$request->modelo;
-        $bicicleta->detallesproducto()->save($detallesproducto);    */
 
-     /*    $imagen = new Imagen();
-        if($request->hasfile("imagen")){
-            $file=$request->file("imagen");
-            $destinationPath= 'img/Multimedia/';
-            $filename=time().'-'.$file->getClientOriginalName();
-            $uploadSuccess=$request->file('imagen')->move($destinationPath, $filename);
-            $imagen->url = $destinationPath . $filename;
-        }  
-        $bicicleta->imagen()->save($imagen);    */
 
         return $bicicleta;
     }
@@ -94,9 +71,8 @@ class BicicletaController extends Controller
     public function show($id, Detallesproducto $detallesproducto, Imagen $imagen)
 
     {
-        $bicicleta=Imagen::find($id);
-        $detallesproducto=Detallesproducto::find($id); 
-        $bicicleta = Bicicleta::find($id);
+        $bicicleta = Bicicleta::with(['detallesproducto'])->findOrFail($id);
+        $bicicleta = Bicicleta::with(['imagen'])->findOrFail($id);
         return $bicicleta;
     }
 
@@ -111,9 +87,6 @@ class BicicletaController extends Controller
     {
         $bicicleta=Detallesproducto::find($id);
         $bicicleta=Imagen::find($id);
-
-        $imagen->url=$request->url;
-   
         $bicicleta = Bicicleta::find($id);
 
         return view('bicicleta.edit', compact('bicicleta','detallesproducto','imagen'));
@@ -129,15 +102,7 @@ class BicicletaController extends Controller
     public function update(Request $request,Bicicleta $bicicleta,Detallesproducto $detallesproducto, Imagen $imagen)
 
     {
-       /*  $detallesproducto=Detallesproducto::find($bicicleta->detallesproducto->id);
-        $detallesproducto->name =$request->name;
-        $detallesproducto->descripcion=$request->descripcion;
-        $detallesproducto->color=$request->color;
-        $detallesproducto->material=$request->material;
-        $detallesproducto->marca=$request->marca;
-        $detallesproducto->modelo=$request->modelo;
-        $detallesproducto->save(); */
-
+     
         $bicicleta=Bicicleta::find($bicicleta->id);
         $bicicleta->tamaño=$request->tamaño;
         $bicicleta->n_serial=$request->n_serial;
@@ -146,15 +111,6 @@ class BicicletaController extends Controller
         $bicicleta->ubicacionhurto=$request->ubicacionhurto;
         $bicicleta->save();
 
-      /*   $imagen=Imagen::find($bicicleta->imagen->id);
-        if($request->hasfile("imagen")){
-                $file=$request->file("imagen");
-                $destinationPath= 'img/Multimedia/';
-                $filename=time().'-'.$file->getClientOriginalName();
-                $uploadSuccess=$request->file('imagen')->move($destinationPath, $filename);
-                $imagen->url = $destinationPath . $filename;
-        }  
-        $imagen->save(); */
        
     return $bicicleta;
     }
@@ -168,8 +124,6 @@ class BicicletaController extends Controller
 
     {
         $bicicleta = Bicicleta::find($id)->delete();
-        $detallesproducto=Detallesproducto::find($id)->delete(); 
-        $imagen = Imagen::find($id)->delete();
 
         return redirect()->route('bicicletas.index')->with('success', 'Bicicleta deleted successfully');
     }

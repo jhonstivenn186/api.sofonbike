@@ -59,7 +59,8 @@ class CategoriaController extends Controller
      */
     public function show($id)
     {
-        $categoria = Categoria::find($id);
+      //  $categoria = Categoria::find($id);
+      $categoria= Categoria::with(['posteos.imagens'])->findOrFail($id);
 
         return $categoria;
     }

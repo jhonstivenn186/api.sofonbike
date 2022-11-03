@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Http\Controllers;
-
-use App\Posteo;
-use App\Categoria;
+namespace App\Http\Controllers\Api;
+use App\Http\Controllers\Controller;
+use App\Models\Posteo;
+use App\Models\Categoria;
 use App\Models\Imagen;
 use App\Models\Detallesproducto;
 use App\Models\User;
@@ -28,18 +28,7 @@ class PosteoController extends Controller
     {
        
       $posteos=Posteo::with('categoria')->get();
-        $posteo=Posteo::where('user_id', auth()->user()->id)->first();;
         $posteos = Posteo::paginate(3);
-       
-       /*  $posteos=Posteo::with('imagen')->get(); */
-        $imagens = Imagen::all()->where('imageable_type', 'App\Posteo');
-
-
-      /*   $posteos = Posteo::with('imagen')->get(); */
-
-
-
-
         return view('posteo.index', compact('posteos','imagens'))
            /*  ->with('i', (request()->input('page', 1) - 1) * $posteos->perPage(3)) */;
     }
@@ -95,28 +84,7 @@ class PosteoController extends Controller
         }  
       
         $posteo->imagens()->save($imagen);   
-/* 
 
-        $comment = new Comment();
-        $comment->mensaje =$request->mensaje;
-        $comment->user_id = auth()->user()->id;
-        $posteo = Posteo::find($posteo->id);
-
-        $comment->posteo()->associate($posteo); 
-     
-    $comment->save();
-        */
-
-
-
-/* 
-        $comment = new Comment();
-        $comment->mensaje =$request->mensaje;
-        $comment->user_id = auth()->user()->id;
-        
-        $posteo->comment()->save($comment); 
-dd($comment);
- */
       
         return redirect()->route('posteos.index')->with('success', 'Posteo created successfully.');
        
@@ -137,41 +105,7 @@ dd($comment);
             /* dd( $posteo = Posteo::find($posteo->id)); */
            /*  dd( $posteo = Posteo::find($posteo->id)); */
         }
-       
-        $comment = new Comment();
-        $comment->mensaje =$request->mensaje;
-        $comment->user_id = auth()->user()->id;
-       
-      /*   $comment->commentable_id =2;
-        $comment->commentable_type ='App\Posteo'; */
-    /*     $comment->save();  */
-  $posteo = Posteo::find($posteos[1]->id);
-      /*   $posteo->comment()->save($comment);    */
 
-      $posteo->comments()->save($comment);
-        /* $posteo->comment()->associate($posteo);  */
-    /*     $posteo->comment()->associate($posteo); */
-    $comment->save();
-
-
-
-
-    $comment = new Comment();
-    $comment->mensaje =$request->mensaje;
-    $comment->user_id = auth()->user()->id;
-    $posteo = Posteo::find($posteos[0]->id);
-    $posteo->comments()->save($comment);
-    $comment->save();
-
-    $comment = new Comment();
-    $comment->mensaje =$request->mensaje;
-    $comment->user_id = auth()->user()->id;
-    $posteo = Posteo::find($posteos[2]->id);
-    $posteo->comments()->save($comment);
-    $comment->save();
-       
-       
-        
         return redirect()->route('posteos.publicados')->with('success', 'Posteo created successfully.');
     }
 
@@ -181,13 +115,20 @@ dd($comment);
      * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($id)    
     {
+        $posteos = Posteo::all();
+        $users = user::all();
+
         $posteo = Posteo::find($id);
-       /*  $posteo=Imagen::find($id); */
-    /*     $detallesproducto=Detallesproducto::find($id);  */
-       $imagen=Imagen::find($id); 
-        return view('posteo.show', compact('posteo','imagen'));
+
+
+        $imagen=Imagen::find($id); 
+       $posteo = Posteo::with(['imagens'])->findOrFail($id);
+       $posteo = Posteo::with(['categoria'])->findOrFail($id); 
+ 
+
+        return $posteo;
     }
 
     /**
@@ -210,20 +151,6 @@ dd($comment);
         return view('posteo.edit', compact('posteo', 'categorias','imagen'));
     }
 
-    public function previewpost($id, Request $request, Imagen $imagen, Categoria $categoria )
-    {
-       
-        
-      
-        $posteo = Posteo::find($id);
-       
-        $categorias=Categoria::pluck('name','id');
-        $posteo->imagen=$request->imagen;
-        $posteos=Posteo::all();
-        $imagens=Imagen::all();
-
-        return view('posteo.previewpost', compact('posteo', 'categorias','imagen','posteos','imagens'));
-    }
 
     /**
      * Update the specified resource in storage.
@@ -262,24 +189,6 @@ dd($comment);
          }
 
 
-        
-         
-/* 
-         foreach ($posteo->imagens as $imagen){
-            dd($posteo);}
-      $posteo=Posteo::find($posteo->id);
-
-      $posteos=Posteo::all();
-
-      foreach ($posteos as $Posteo){
-       dd($posteo);
-      } */
-     /*    $comment = new Comment();
-        $comment->mensaje =$request->mensaje;
-        $comment->user_id = auth()->user()->id;
-      
-        $posteo->comment()->save($comment); 
- */
         return redirect()->route('posteos.index')->with('success', 'Posteo updated successfully');
     }
 
@@ -316,59 +225,11 @@ dd($comment);
 
 
     { 
-        $comment=Comment::all();
-        $comments=Comment::all();
         $imagens=Imagen::all();
         $posteos=Posteo::all();
        /*  $posteo = Posteo::find($id); */
         return view('posteo.publicados', compact('posteos','imagens','comments','comment'));
     }
 
-/* 
-    public function like(Posteo $posteo)
-    {
-        $posteo->likeBy();
-
-        return back();
-    }
-
-    public function unlike(Posteo $posteo)
-    {
-        $posteo->unlikeBy();
-
-        return back();
-    }
-
-    public function dislike(Posteo $posteo)
-    {
-        $posteo->dislikeBy();
-
-        return back();
-    }
-
-    public function undislike(Posteo $posteo)
-    {
-        $posteo->undislikeBy();
-
-        return back();
-    } */
-
-    public function likePost($id)
-    {
-        $posteo = Posteo::find($id);
-        $posteo->like(2);
-        $posteo->save();
-
-        return redirect()->route('posteos.index')->with('message','Post Like successfully!');
-    }
-
-    public function unlikePost($id)
-    {
-        $posteo = Posteo::find($id);
-        $posteo->unlike(2);
-        $posteo->save();
-        
-        return redirect()->route('posteos.index')->with('message','Post Like undo successfully!');
-    }
 
 }

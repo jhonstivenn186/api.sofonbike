@@ -33,8 +33,7 @@ class DetallesproductoController extends Controller
     public function create()
     {
         $detallesproducto = new Detallesproducto();
-        $productos=Producto::pluck('id'); 
-        $bicicletas=Bicicleta::pluck('id'); 
+       
      
         return view('detallesproducto.create', compact('detallesproducto', 'productos','bicicletas'));
     }
@@ -60,7 +59,6 @@ class DetallesproductoController extends Controller
     public function show($id, Bicicleta $bicicleta)
     {
         $detallesproducto=Detallesproducto::find($id); 
-        $bicicleta = Bicicleta::find($id);
         return view('detallesproducto.show', compact('detallesproducto', 'bicicleta'));
     }
 
@@ -85,7 +83,7 @@ class DetallesproductoController extends Controller
      */
     public function update(Request $request, Detallesproducto $detallesproducto)
     {
-        request()->validate(Detallesproducto::$rules);
+      //  request()->validate(Detallesproducto::$rules);
 
         $detallesproducto->update($request->all());
         

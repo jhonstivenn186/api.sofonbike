@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
-
-use App\Imagen;
+namespace App\Http\Controllers\Api;
+use App\Http\Controllers\Controller;
+use App\Models\Imagen;
 use Illuminate\Http\Request;
 
 /**
@@ -20,8 +20,7 @@ class ImagenController extends Controller
     {
         $imagens = Imagen::paginate();
 
-        return view('imagen.index', compact('imagens'))
-            ->with('i', (request()->input('page', 1) - 1) * $imagens->perPage());
+        return $imagens;
     }
 
     /**
@@ -43,7 +42,7 @@ class ImagenController extends Controller
      */
     public function store(Request $request)
     {
-        request()->validate(Imagen::$rules);
+    //    request()->validate(Imagen::$rules);
 
         $imagen = Imagen::create($request->all());
 
@@ -61,7 +60,7 @@ class ImagenController extends Controller
     {
         $imagen = Imagen::find($id);
 
-        return view('imagen.show', compact('imagen'));
+        return /* view('imagen.show', compact('imagen')) */ $imagen;
     }
 
     /**
@@ -86,7 +85,7 @@ class ImagenController extends Controller
      */
     public function update(Request $request, Imagen $imagen)
     {
-        request()->validate(Imagen::$rules);
+    //    request()->validate(Imagen::$rules);
 
         $imagen->update($request->all());
 
