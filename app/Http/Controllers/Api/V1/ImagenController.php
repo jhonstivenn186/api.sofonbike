@@ -1,6 +1,10 @@
 <?php
 
+<<<<<<< HEAD:app/Http/Controllers/Api/V1/ImagenController.php
+namespace App\Http\Controllers\Api\V1;
+=======
 namespace App\Http\Controllers\Api;
+>>>>>>> 27c5d8c15821d2e07e07c5d699790cb6420d8818:app/Http/Controllers/Api/ImagenController.php
 use App\Http\Controllers\Controller;
 use App\Models\Imagen;
 use Illuminate\Http\Request;
@@ -21,6 +25,8 @@ class ImagenController extends Controller
         $imagens = Imagen::paginate();
 
         return $imagens;
+<<<<<<< HEAD:app/Http/Controllers/Api/V1/ImagenController.php
+=======
     }
 
     /**
@@ -32,6 +38,7 @@ class ImagenController extends Controller
     {
         $imagen = new Imagen();
         return view('imagen.create', compact('imagen'));
+>>>>>>> 27c5d8c15821d2e07e07c5d699790cb6420d8818:app/Http/Controllers/Api/ImagenController.php
     }
 
     /**
@@ -49,7 +56,6 @@ class ImagenController extends Controller
         return redirect()->route('imagens.index')
             ->with('success', 'Imagen created successfully.');
     }
-
     /**
      * Display the specified resource.
      *
@@ -59,6 +65,9 @@ class ImagenController extends Controller
     public function show($id)
     {
         $imagen = Imagen::find($id);
+<<<<<<< HEAD:app/Http/Controllers/Api/V1/ImagenController.php
+        return /* view('imagen.show', compact('imagen')) */ $imagen;
+=======
 
         return /* view('imagen.show', compact('imagen')) */ $imagen;
     }
@@ -74,6 +83,7 @@ class ImagenController extends Controller
         $imagen = Imagen::find($id);
 
         return view('imagen.edit', compact('imagen'));
+>>>>>>> 27c5d8c15821d2e07e07c5d699790cb6420d8818:app/Http/Controllers/Api/ImagenController.php
     }
 
     /**

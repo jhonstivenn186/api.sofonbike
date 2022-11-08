@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\Api\V1;
 use App\Http\Controllers\Controller;
 use App\Models\Tipo;
 use Illuminate\Http\Request;
@@ -19,19 +19,7 @@ class TipoController extends Controller
     public function index()
     {
         $tipos = Tipo::paginate();
-
         return $tipos;
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        $tipo = new Tipo();
-        return view('tipo.create', compact('tipo'));
     }
 
     /**
@@ -63,19 +51,6 @@ class TipoController extends Controller
        // $tipo = Tipo::find($id);
 
         return $tipo;
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        $tipo = Tipo::find($id);
-
-        return view('tipo.edit', compact('tipo'));
     }
 
     /**

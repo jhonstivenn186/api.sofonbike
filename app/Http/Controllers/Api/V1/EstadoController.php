@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\Api\V1;
 use App\Http\Controllers\Controller;
 use App\Models\Estado;
 use Illuminate\Http\Request;
@@ -21,6 +21,10 @@ class EstadoController extends Controller
         $estados = Estado::paginate();
         $response = Http::get('http://api.codersfree.test/v1/categories');
         $responseArray = $response->json();  
+<<<<<<< HEAD:app/Http/Controllers/Api/V1/EstadoController.php
+        return  /* view('welcome', compact('categoriesArray')) */$responseArray;
+       /*  return $estados; */
+=======
         
         return  /* view('welcome', compact('categoriesArray')) */$responseArray;
        /*  return $estados; */
@@ -35,6 +39,7 @@ class EstadoController extends Controller
     {
         $estado = new Estado();
         return $estado;
+>>>>>>> 27c5d8c15821d2e07e07c5d699790cb6420d8818:app/Http/Controllers/Api/EstadoController.php
     }
 
     /**
@@ -45,9 +50,11 @@ class EstadoController extends Controller
      */
     public function store(Request $request)
     {
+<<<<<<< HEAD:app/Http/Controllers/Api/V1/EstadoController.php
+=======
 
+>>>>>>> 27c5d8c15821d2e07e07c5d699790cb6420d8818:app/Http/Controllers/Api/EstadoController.php
         $estado = Estado::create($request->all());
-
         return $estado;
     }
 
@@ -65,19 +72,6 @@ class EstadoController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        $estado = Estado::find($id);
-
-        return view('estado.edit', compact('estado'));
-    }
-
-    /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request $request
@@ -88,13 +82,10 @@ class EstadoController extends Controller
     {
 /*         request()->validate(Estado::$rules);
  */
-
         $request->validate([
             'name' => 'required',
-            
         ]);
         $estado->update($request->all());
-
         return $estado;
     }
 
@@ -106,7 +97,6 @@ class EstadoController extends Controller
     public function destroy($id)
     {
         $estado = Estado::find($id)->delete();
-
         return 'registro eliminado' ;
     }
 }

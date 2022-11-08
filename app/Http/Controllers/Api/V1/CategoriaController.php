@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\Api\V1;
 use App\Http\Controllers\Controller;
 use App\Models\Categoria;
 use Illuminate\Http\Request;
@@ -19,20 +19,8 @@ class CategoriaController extends Controller
     public function index()
     {
         $categorias = Categoria::paginate();
-
         return $categorias; 
 
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create($categorias)
-    {
-        $categoria = new Categoria();
-        return $categorias;
     }
 
     /**
@@ -44,9 +32,7 @@ class CategoriaController extends Controller
     public function store(Request $request)
     {
       /*   request()->validate(Categoria::$rules); */
-
         $categoria = Categoria::create($request->all());
-
         return $categoria; 
 
     }
@@ -61,6 +47,8 @@ class CategoriaController extends Controller
     {
       //  $categoria = Categoria::find($id);
       $categoria= Categoria::with(['posteos.imagens'])->findOrFail($id);
+<<<<<<< HEAD:app/Http/Controllers/Api/V1/CategoriaController.php
+=======
 
         return $categoria;
     }
@@ -74,6 +62,7 @@ class CategoriaController extends Controller
     public function edit($id)
     {
         $categoria = Categoria::find($id);
+>>>>>>> 27c5d8c15821d2e07e07c5d699790cb6420d8818:app/Http/Controllers/Api/CategoriaController.php
 
         return $categoria;
     }
@@ -89,13 +78,10 @@ class CategoriaController extends Controller
     {
         $request->validate([
             'name' => 'required',
-            
         ]);
     /*   $categoria=Categoria::find($categoria->id); */
      /*    $categoria->name=$request->name;
         $categoria->save();  */
-
-
       /*   $request->validate([
             'name' => 'required|max:255'
         ]);
